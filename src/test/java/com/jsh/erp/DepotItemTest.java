@@ -25,6 +25,6 @@ public class DepotItemTest {
     @Test
     public void getFinishNumber() throws Exception{
         BigDecimal num = depotItemService.getFinishNumber(568l,238l);
-        log.info("depot result:" + JSON.toJSONString(num));
+//        log.info("depot result:" + JSON.toJSONString(num));
     }
 }

@@ -22,13 +22,13 @@ public class DepotTest {
     @Test
     public void getDepot() throws Exception{
         Depot result = depotService.getDepot(1l);
-        log.info("depot result:" + JSON.toJSONString(result));
+//        log.info("depot result:" + JSON.toJSONString(result));
     }
 
     @Test
     public void getAllList() throws Exception{
         List<Depot> depotList =depotService.getAllList();
-        log.info("depot result:" + JSON.toJSONString(depotList));
+//        log.info("depot result:" + JSON.toJSONString(depotList));
     }
 
 

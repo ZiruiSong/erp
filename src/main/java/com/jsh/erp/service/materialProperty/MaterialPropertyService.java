@@ -39,7 +39,7 @@ public class MaterialPropertyService {
     @Resource
     private LogService logService;
 
-    public MaterialProperty getMaterialProperty(long id)throws Exception {
+    public MaterialProperty getMaterialProperty(long id) {
         MaterialProperty result=null;
         try{
             result=materialPropertyMapper.selectByPrimaryKey(id);
@@ -49,7 +49,7 @@ public class MaterialPropertyService {
         return result;
     }
 
-    public List<MaterialProperty> getMaterialProperty()throws Exception {
+    public List<MaterialProperty> getMaterialProperty() {
         MaterialPropertyExample example = new MaterialPropertyExample();
         example.createCriteria().andDeleteFlagNotEqualTo(BusinessConstants.DELETE_FLAG_DELETED);
         List<MaterialProperty>  list=null;
