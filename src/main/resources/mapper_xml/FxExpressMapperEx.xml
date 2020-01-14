@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsh.erp.datasource.mappers.FxExpressMapperEx">
+
+    <select id="selectByConditionFxExpress" parameterType="com.jsh.erp.datasource.entities.FxExpressExample" resultMap="com.jsh.erp.datasource.mappers.FxExpressMapper.BaseResultMap">
+        select
+        <include refid="com.jsh.erp.datasource.mappers.FxExpressMapper.Base_Column_List" />
+        from fx_express
+        where 1=1
+        <if test="expressName != null ">
+            and express_name like '%${expressName}%'
+        </if>
+        order by id asc
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <select id="countsByFxExpress" resultType="java.lang.Long">
+        select count(id)
+        from fx_express
+        where 1=1
+        <if test="expressName != null ">
+            and express_name like '%${expressName}%'
+        </if>
+    </select>
+</mapper>

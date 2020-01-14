@@ -1,4 +1,4 @@
-package com.jsh.erp.service.fxArea;
+package com.jsh.erp.service.fxExpress;
 
 
 import com.jsh.erp.service.ICommonQuery;
@@ -12,12 +12,11 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
-@Service(value="fxArea_component")
-@FxAreaResource
-public class FxAreaComponent implements ICommonQuery {
+@Service(value="fxExpress_component")
+@FxExpressResource
+public class FxExpressComponent implements ICommonQuery {
     @Resource
-    private FxAreaService fxAreaService;
-
+    private FxExpressService fxExpressService;
     @Override
     public Object selectOne(Long id) throws Exception {
         return null;
@@ -26,20 +25,18 @@ public class FxAreaComponent implements ICommonQuery {
     @Override
     public List<?> select(Map<String, String> map) throws Exception {
         String search = map.get(Constants.SEARCH);
-        //区域名称
-        String areaName = StringUtil.getInfo(search, "areaName");
-        if(StringUtil.isEmpty(areaName)){
-            areaName = null;
+        String expressName = StringUtil.getInfo(search,"expressName");
+        if(StringUtil.isEmpty(expressName)){
+            expressName = null;
         }
-
-        return fxAreaService.select(null,areaName,null,null, QueryUtils.offset(map),QueryUtils.rows(map));
+        return fxExpressService.select(expressName, QueryUtils.offset(map),QueryUtils.rows(map));
     }
 
     @Override
     public Long counts(Map<String, String> map) throws Exception {
         String search = map.get(Constants.SEARCH);
-        String areaName = StringUtil.getInfo(search, "areaName");
-        return fxAreaService.countsByFxArea(null,areaName,null,null);
+        String expressName = StringUtil.getInfo(search,"expressName");
+        return fxExpressService.countsByFxExpress(expressName);
     }
 
     @Override

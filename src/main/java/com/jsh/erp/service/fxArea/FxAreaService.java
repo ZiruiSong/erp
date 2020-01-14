@@ -24,31 +24,6 @@ public class FxAreaService {
     @Resource
     private FxAreaMapperEx fxAreaMapperEx;
 
-    public FxArea getFxArea(Integer id){
-        FxArea result = null;
-        try {
-
-            result = fxAreaMapper.selectByPrimaryKey(id);
-        }catch (Exception e){
-            JshException.readFail(logger,e);
-        }
-        return result;
-    }
-
-    public List<FxArea> getFxArea(){
-        FxAreaExample example = new FxAreaExample();
-        example.createCriteria().andAreaIdIsNotNull();
-        List<FxArea> result = null;
-        try{
-            result = fxAreaMapper.selectByExample(example);
-        }catch (Exception e){
-
-            JshException.readFail(logger,e);
-        }
-
-        return result;
-    }
-
     public List<FxArea> select(Integer areaId,String areaName,Integer areaParentId,String areaZip,int offset, int rows){
         List<FxArea> list = null;
         try{
