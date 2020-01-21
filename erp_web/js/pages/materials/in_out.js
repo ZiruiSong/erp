@@ -1423,9 +1423,9 @@
     }
 	//新增信息
 	function addDepotHead(){
-        if(checkPower()){
+        /*if(checkPower()){
         	return;
-		}
+		}*/
 		$('#depotHeadFM').form('clear');
 		var thisDateTime = getNowFormatDateTime(); //当前时间
 		$("#OperTime").val(thisDateTime);

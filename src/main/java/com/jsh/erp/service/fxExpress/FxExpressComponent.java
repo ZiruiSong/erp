@@ -41,12 +41,13 @@ public class FxExpressComponent implements ICommonQuery {
 
     @Override
     public int insert(String beanJson, HttpServletRequest request) throws Exception {
-        return 0;
+
+        return fxExpressService.insertFxExpress(beanJson,request);
     }
 
     @Override
     public int update(String beanJson, Long id, HttpServletRequest request) throws Exception {
-        return 0;
+        return fxExpressService.updateFxExpress(beanJson,id,request);
     }
 
     @Override

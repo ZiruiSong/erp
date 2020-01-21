@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>快递管理</title>
+    <meta charset="utf-8">
+    <!-- 指定以IE8的方式来渲染 -->
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE8"/>
+    <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"/>
+    <script type="text/javascript" src="/js/jquery-1.8.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/js/easyui-1.3.5/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="/js/easyui-1.3.5/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="/css/common.css"/>
+    <!--link type="text/css" rel="stylesheet" href="/css/material.css"/>-->
+    <script type="text/javascript" src="/js/easyui-1.3.5/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/js/easyui-1.3.5/locale/easyui-lang-zh_CN.js"></script>
+    <script src="/js/handlebars.js"></script>
+   <!-- <script type="text/javascript" src="/js/common/outlook_in.js"></script>-->
+    <script type="text/javascript" src="/js/common/common.js"></script>
+    <script src="/js/common/jsherp.js"></script>
+</head>
+<body>
+<!-- 数据显示table -->
+<div id="tablePanel" class="easyui-panel" data-options="fit:true" style="padding:1px;top:300px;" title="快递管理" iconCls="icon-list">
+    <table id="searchTable">
+        <tr>
+            <td>快递名称：</td>
+            <td>
+                <input name="searchExpressName" id="searchExpressName" style="width: 100px;" />
+            </td>
+            <td>&nbsp;</td>
+
+            <td>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" id="searchBtn">查询</a>&nbsp;&nbsp;
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-redo" id="searchResetBtn">重置</a>
+            </td>
+        </tr>
+    </table>
+    <table id="tableData" style="top:300px;border-bottom-color:#FFFFFF"></table>
+</div>
+<div id="fxExpressDlg" class="easyui-dialog" style="width:860px;height:420px;padding:10px 20px"
+     closed="true" buttons="#dlg-buttons" modal="true" collapsible="false" closable="true">
+    <form id="fxExpressFM" method="post" novalidate>
+        <table id="expressTable">
+            <tr>
+                <td style="width:60px; height:30px;">快递名称</td>
+                <td style="padding:5px;width:180px;">
+                    <input name="expressName" id="expressName" class="easyui-validatebox"
+                           data-options="required:true"
+                           style="width: 180px;height: 20px"/>
+                </td>
+                <td></td>
+                <td style="width:80px;">快递编号</td>
+                <td style="padding:5px;width:180px;">
+                    <input name="expressCode" id="expressCode" class="easyui-validatebox"
+                           style="width: 180px;height: 20px"/>
+                </td>
+            </tr>
+            <tr>
+                <td style="height:30px;">淘宝编号</td>
+                <td style="padding:5px" >
+                    <input name="tbCode" id="tbCode"
+                           class="easyui-validatebox"
+                           style="width: 180px;height: 20px" />
+                </td>
+                <td></td>
+                <td style="height:30px;">京东编号</td>
+                <td style="padding:5px" >
+                    <input name="jdCode" id="jdCode"
+                           class="easyui-validatebox"
+                           style="width: 180px;height: 20px" />
+                </td>
+
+            </tr>
+            <tr>
+                <td style="height:30px;">首重价格（元）</td>
+                <td style="padding:5px" >
+                    <input name="firstPrice" id="firstPrice"
+                           class="easyui-validatebox"
+                           data-options="required:true"
+                           style="width: 180px;height: 20px" />
+                </td>
+                <td></td>
+                <td style="height:30px;">续重价格（元）</td>
+                <td style="padding:5px" >
+                    <input name="continuousPrice" id="continuousPrice"
+                           class="easyui-validatebox"
+                           data-options="required:true"
+                           style="width: 180px;height: 20px" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" id="saveFxExpress" class="easyui-linkbutton" iconCls="icon-ok">保存</a>
+    <a href="javascript:void(0)" id="cancelFxExpress" class="easyui-linkbutton" iconCls="icon-cancel"
+       onclick="javascript:$('#fxExpressDlg').dialog('close')">取消</a>
+</div>
+
+<script type="text/javascript">
+    //快递信息列表
+    var fxExpressDataList=null;
+    //初始化界面
+    $(function () {
+        //初始化区域信息
+        initDataList();
+        initTableData();
+        ininPager();
+    });
+
+    //初始化区域信息
+    function initDataList() {
+        //ajax请求
+        $.ajax({
+            type: "get",
+            url: "/fxExpress/list",
+            dataType: "json",
+            //分页参数，当前页和每页大小
+            data: ({
+                currentPage: 1,
+                pageSize: 100
+            }),
+            success: function (res) {
+                //请求成功200
+                if(res && res.code === 200){
+                    //取出data数据
+                    if(res.data && res.data.page) {
+                        fxExpressDataList = res.data.page.rows; //属性列表
+                    }
+                }
+            },
+            //此处添加错误处理
+            error: function () {
+                $.messager.alert('查询提示', '查询信息异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+    }
+
+    //初始化表格数据
+    function initTableData() {
+        //改变宽度和高度
+        $("#searchPanel").panel({width: webW - 2});
+        $("#tablePanel").panel({width: webW - 2});
+        $('#tableData').datagrid({
+            //title:'商品列表',
+            //iconCls:'icon-save',
+            //width:700,
+            height: heightInfo,
+            nowrap: false,
+            rownumbers: false,
+            //动画效果
+            animate: false,
+            //选中单行
+            singleSelect: true,
+            collapsible: false,
+            selectOnCheck: false,
+            //fitColumns:true,
+            //单击行是否选中
+            //checkOnSelect : false,
+            pagination: true,
+            //交替出现背景
+            striped: true,
+            //loadFilter: pagerFilter,
+            pageSize: initPageSize,
+            pageList: initPageNum,
+            columns: [[
+                {title: 'ID', field: 'id', width: 100},
+                {title: '快递名称', field: 'expressName', width: 100},
+                {title: '快递编码', field: 'expressCode', width: 100},
+                {title: '淘宝编码', field: 'tbCode', width: 100},
+                {title: '京东编码', field: 'jdCode', width: 100},
+                {title: '首重价格（元）', field: 'firstPrice', width: 100},
+                {title: '续重价格（元）', field: 'continuousPrice', width: 100},
+                {
+                    title: '操作', field: 'op', align: "center", width: 60, formatter: function (value, rec, index) {
+                        var str = '';
+                        str += '<img title="编辑" src="/js/easyui-1.3.5/themes/icons/pencil.png" style="cursor: pointer;" onclick="editExpress(\'' + index + '\');"/>&nbsp;&nbsp;&nbsp;';
+                        return str;
+                    }
+                }
+
+            ]],
+            toolbar: [
+                {
+                    id: 'addExpress',
+                    text: '增加',
+                    iconCls: 'icon-add',
+                    handler: function () {
+                        addExpress();
+                    }
+                },
+                '-',
+                {
+                    id: 'deleteExpress',
+                    text: '删除',
+                    iconCls: 'icon-remove',
+                    handler: function () {
+                        // alert('删除成功');
+                        deleteExpress();
+                    }
+                }
+            ],
+            onLoadError: function () {
+                $.messager.alert('页面加载提示', '页面加载异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+        dgResize();
+        showExpressDetails(1, initPageSize);
+    }
+
+    //初始化键盘enter事件
+    $(document).keydown(function (event) {
+        //兼容 IE和firefox 事件
+        var e = window.event || event;
+        var k = e.keyCode || e.which || e.charCode;
+        //兼容 IE,firefox 兼容
+        var obj = e.srcElement ? e.srcElement : e.target;
+        //绑定键盘事件为 id是指定的输入框才可以触发键盘事件 13键盘事件 ---遗留问题 enter键效验 对话框会关闭问题
+        if (k == "13" && (obj.id == "CategoryLevel" || obj.id == "Name")) {
+            $("#saveMaterial").click();
+        }
+        //搜索按钮添加快捷键
+        if (k == "13" && (obj.id == "searchCategoryId" || (obj.id == "searchName"))) {
+            $("#searchBtn").click();
+        }
+    });
+
+    //分页信息处理
+    function ininPager() {
+        try {
+            var opts = $("#tableData").datagrid('options');
+            var pager = $("#tableData").datagrid('getPager');
+            pager.pagination({
+                onSelectPage: function (pageNum, pageSize) {
+                    opts.pageNumber = pageNum;
+                    opts.pageSize = pageSize;
+                    pager.pagination('refresh',
+                        {
+                            pageNumber: pageNum,
+                            pageSize: pageSize
+                        });
+                    showExpressDetails(pageNum, pageSize);
+                }
+            });
+        }
+        catch (e) {
+            $.messager.alert('异常处理提示', "分页信息异常 :  " + e.name + ": " + e.message, 'error');
+        }
+    }
+
+    function showExpressDetails(pageNo, pageSize) {
+        var expressName = $.trim($("#searchExpressName").val());
+        $.ajax({
+            type: "get",
+            url: "/fxExpress/list",
+            dataType: "json",
+            data: ({
+                search: JSON.stringify({
+                    expressName: expressName
+                }),
+                currentPage: pageNo,
+                pageSize: pageSize
+            }),
+            success: function (res) {
+                if(res && res.code === 200){
+                    if(res.data && res.data.page) {
+                        $("#tableData").datagrid('loadData', res.data.page);
+                    }
+                }
+            },
+            //此处添加错误处理
+            error: function () {
+                $.messager.alert('查询提示', '查询数据后台异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+    }
+
+    //搜索处理
+    $("#searchBtn").unbind().bind({
+        click: function () {
+            showExpressDetails(1, initPageSize);
+            var opts = $("#tableData").datagrid('options');
+            var pager = $("#tableData").datagrid('getPager');
+            opts.pageNumber = 1;
+            opts.pageSize = initPageSize;
+            pager.pagination('refresh', {
+                pageNumber: 1,
+                pageSize: initPageSize
+            });
+        }
+    });
+
+
+    //重置按钮
+    $("#searchResetBtn").unbind().bind({
+        click: function () {
+            $("#searchExpressName").val("");
+            //加载完以后重新初始化
+            $("#searchBtn").click();
+        }
+    });
+    var url = '';
+    var op = '';
+    //添加快递
+    function addExpress(){
+        $('#fxExpressDlg').dialog('open').dialog('setTitle', '<img src="/js/easyui-1.3.5/themes/icons/edit_add.png"/>&nbsp;添加快递');
+        $('.window-mask').css({width: webW, height: webH});
+        $('#expressTable tr  td .easyui-validatebox').val('');
+        url = '/fxExpress/add';
+        op='add';
+    }
+
+    //校验快递是否已经存在
+    function checkIsExist(){
+        var expressName=$.trim($('#expressName').val());
+        var flag =false;
+        if(null != expressName){
+            $.ajax({
+                url:'/fxExpress/checkIsExist',
+                type:'get',
+                dataType:'json',
+                async:false,
+                data:({
+                    expressName:expressName
+                }),
+                success:function (res) {
+                    if(res && res.code === 200){
+                        if(res.data && res.data.status){
+                            flag = res.data.status;
+                            if(flag){
+                                $.messager.alert('提示','快递已存在!','info');
+                                return;
+                            }
+                        }
+                    }
+                },
+                error:function () {
+                    $.messager.alert('提示','校验快递名称出现异常，请稍候再试！','error');
+                    return;
+                }
+            });
+        }
+        return flag;
+    }
+
+    //编辑
+    function editExpress(index){
+        var rowsdata = $("#tableData").datagrid("getRows")[index];
+        $('#expressName').focus().val(rowsdata.expressName);
+        $('#expressCode').focus().val(rowsdata.expressCode);
+        $('#tbCode').focus().val(rowsdata.tbCode);
+        $('#jdCode').focus().val(rowsdata.jdCode);
+        $('#firstPrice').focus().val(rowsdata.firstPrice);
+        $('#continuousPrice').focus().val(rowsdata.continuousPrice);
+        $('#fxExpressDlg').dialog('open').dialog('setTitle','<img src="/js/easyui-1.3.5/themes/icons/pencil.png"/>&nbsp;编辑快递信息');
+        url='/fxExpress/update?id='+rowsdata.id;
+        op = 'edit';
+    }
+
+    //保存信息
+    $('#saveFxExpress').off('click').on('click',function(){
+        //校验
+        if(!$('#expressName').val()){
+            $.messager.alert('提示','快递名称不能为空！','warning');
+            return;
+        }
+
+        if(!$('#firstPrice').val()){
+            $.messager.alert('提示','首重价格不能为空！','warning');
+            return;
+        }
+
+        if(!$('#continuousPrice').val()){
+            $.messager.alert('提示','续重价格不能为空！','warning');
+            return;
+        }
+
+        if('add' == op){
+            if(checkIsExist()){
+                return;
+            }
+        }
+
+        var expressObj={};
+        expressObj.expressName = $.trim($('#expressName').val());
+        expressObj.expressCode = $.trim($('#expressCode').val());
+        expressObj.tbCode = $.trim($('#tbCode').val());
+        expressObj.jdCode = $.trim($('#jdCode').val());
+        expressObj.firstPrice = $.trim($('#firstPrice').val());
+        expressObj.continuousPrice = $.trim($('#continuousPrice').val());
+        $.ajax({
+            url:url,
+            type:'post',
+            dataType:'json',
+            async:false,
+            data:({
+                info:JSON.stringify(expressObj)
+            }),
+            success:function (res) {
+                if(res && res.code === 200) {
+                    $('#fxExpressDlg').dialog('close');
+                    //加载完以后重新初始化
+                    var opts = $("#tableData").datagrid('options');
+                    showExpressDetails(opts.pageNumber, opts.pageSize);
+                }
+            },
+            error:function () {
+                $.messager.alert('提示', '保存快递信息异常，请稍后再试！', 'error');
+                return;
+            }
+        });
+    });
+
+    //批量删除
+    function deleteExpress(){
+        var rowdata = $('#tableData').datagrid('getChecked');
+        // alert(rowdata.length);
+        if (rowdata.length == 0) {
+            $.messager.alert('删除提示', '没有记录被选中！', 'info');
+            return;
+        }
+
+        if(rowdata.length>0){
+            $.messager.confirm('删除确认','确定要删除选中的快递信息吗？',function (r) {
+                if(r){
+                    var ids = '';
+                    for(var i=0;i<rowdata.length;i++){
+                        if(i== rowdata.length-1){
+                            ids+=rowdata[i].id;
+                            break;
+                        }
+                        ids+=rowdata[i].id+',';
+                    }
+                    $.ajax({
+                        type:'post',
+                        url:'/fxExpress/deleteFxExpressByIds',
+                        dataType:'json',
+                        async: false,
+                        data:({
+                            ids:ids
+                        }),
+                        success:function (res) {
+                            if(res && res.code === 200) {
+                                var opts = $("#tableData").datagrid('options');
+                                showExpressDetails(opts.pageNumber, opts.pageSize);
+                                // $("#searchBtn").click();
+                                $(":checkbox").attr("checked", false);
+                            } else {
+                                $.messager.alert('删除异常', '删除快递出现异常，请稍后再试！', 'error');
+                            }
+                        },
+                        error:function () {
+                            $.messager.alert('删除异常', '删除快递出现异常，请稍后再试！', 'error');
+                            return;
+                        }
+                    });
+                }
+            })
+        }
+    }
+</script>
+</body>
+</html>

@@ -667,9 +667,9 @@
 
     //增加
 	function addAccountHead(){
-        if(checkPower()){
+        /*if(checkPower()){
             return;
-        }
+        }*/
 		$('#accountHeadFM').form('clear');
 		var thisDateTime = getNowFormatDateTime(); //当前时间
 		$("#BillTime").val(thisDateTime);

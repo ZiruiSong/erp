@@ -1020,7 +1020,6 @@
         var oldUnit = "";
         var oldManyUnit = "";
 
-        //根据商品属性架子啊
         function bindMProperty() {
             var trColor = $(".tr-color").html();
             trColor = '<tr class="tr-color">' + trColor + '</tr>';
@@ -1101,9 +1100,9 @@
         }
 
         function addMaterial() {
-            if(checkPower()){
+            /*if(checkPower()){
                 return;
-            }
+            }*/
             $('#materialFM input').val(""); //将输入框全部清空
 
             bindMProperty(); //根据商品属性绑定

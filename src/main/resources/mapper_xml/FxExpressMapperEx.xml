@@ -24,4 +24,13 @@
             and express_name like '%${expressName}%'
         </if>
     </select>
+
+    <delete id="deleteExpressByIds" >
+        delete from fx_express
+        where id in(
+        <foreach collection="ids" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
 </mapper>

@@ -3,6 +3,7 @@ package com.jsh.erp.datasource.mappers;
 import com.jsh.erp.datasource.entities.FxExpress;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 public interface FxExpressMapperEx {
@@ -16,4 +17,7 @@ public interface FxExpressMapperEx {
     Long countsByFxExpress(
             @Param("expressName") String expressName
     );
+
+
+    int deleteExpressByIds(@Param("ids")String ids[]);
 }
