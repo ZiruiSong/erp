@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsh.erp.datasource.mappers.FxInventoryMapper">
+  <resultMap id="BaseResultMap" type="com.jsh.erp.datasource.entities.FxInventory">
+    <id column="inven_id" jdbcType="BIGINT" property="invenId" />
+    <result column="supplier_id" jdbcType="BIGINT" property="supplierId" />
+    <result column="inven_agio" jdbcType="DECIMAL" property="invenAgio" />
+    <result column="inven_model" jdbcType="VARCHAR" property="invenModel" />
+    <result column="inven_num" jdbcType="INTEGER" property="invenNum" />
+    <result column="tag_price" jdbcType="DECIMAL" property="tagPrice" />
+    <result column="inven_size" jdbcType="VARCHAR" property="invenSize" />
+    <result column="ori_size" jdbcType="VARCHAR" property="oriSize" />
+    <result column="ori_model" jdbcType="VARCHAR" property="oriModel" />
+    <result column="standard_size" jdbcType="VARCHAR" property="standardSize" />
+    <result column="barcode" jdbcType="VARCHAR" property="barcode" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    inven_id, supplier_id, inven_agio, inven_model, inven_num, tag_price, inven_size, 
+    ori_size, ori_model, standard_size, barcode, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.jsh.erp.datasource.entities.FxInventoryExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from fx_inventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_inventory
+    where inven_id = #{invenId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from fx_inventory
+    where inven_id = #{invenId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jsh.erp.datasource.entities.FxInventoryExample">
+    delete from fx_inventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jsh.erp.datasource.entities.FxInventory">
+    insert into fx_inventory (inven_id, supplier_id, inven_agio, 
+      inven_model, inven_num, tag_price, 
+      inven_size, ori_size, ori_model, 
+      standard_size, barcode, update_time
+      )
+    values (#{invenId,jdbcType=BIGINT}, #{supplierId,jdbcType=BIGINT}, #{invenAgio,jdbcType=DECIMAL}, 
+      #{invenModel,jdbcType=VARCHAR}, #{invenNum,jdbcType=INTEGER}, #{tagPrice,jdbcType=DECIMAL}, 
+      #{invenSize,jdbcType=VARCHAR}, #{oriSize,jdbcType=VARCHAR}, #{oriModel,jdbcType=VARCHAR}, 
+      #{standardSize,jdbcType=VARCHAR}, #{barcode,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.FxInventory">
+    insert into fx_inventory
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="invenId != null">
+        inven_id,
+      </if>
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="invenAgio != null">
+        inven_agio,
+      </if>
+      <if test="invenModel != null">
+        inven_model,
+      </if>
+      <if test="invenNum != null">
+        inven_num,
+      </if>
+      <if test="tagPrice != null">
+        tag_price,
+      </if>
+      <if test="invenSize != null">
+        inven_size,
+      </if>
+      <if test="oriSize != null">
+        ori_size,
+      </if>
+      <if test="oriModel != null">
+        ori_model,
+      </if>
+      <if test="standardSize != null">
+        standard_size,
+      </if>
+      <if test="barcode != null">
+        barcode,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="invenId != null">
+        #{invenId,jdbcType=BIGINT},
+      </if>
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="invenAgio != null">
+        #{invenAgio,jdbcType=DECIMAL},
+      </if>
+      <if test="invenModel != null">
+        #{invenModel,jdbcType=VARCHAR},
+      </if>
+      <if test="invenNum != null">
+        #{invenNum,jdbcType=INTEGER},
+      </if>
+      <if test="tagPrice != null">
+        #{tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="invenSize != null">
+        #{invenSize,jdbcType=VARCHAR},
+      </if>
+      <if test="oriSize != null">
+        #{oriSize,jdbcType=VARCHAR},
+      </if>
+      <if test="oriModel != null">
+        #{oriModel,jdbcType=VARCHAR},
+      </if>
+      <if test="standardSize != null">
+        #{standardSize,jdbcType=VARCHAR},
+      </if>
+      <if test="barcode != null">
+        #{barcode,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jsh.erp.datasource.entities.FxInventoryExample" resultType="java.lang.Long">
+    select count(*) from fx_inventory
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update fx_inventory
+    <set>
+      <if test="record.invenId != null">
+        inven_id = #{record.invenId,jdbcType=BIGINT},
+      </if>
+      <if test="record.supplierId != null">
+        supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="record.invenAgio != null">
+        inven_agio = #{record.invenAgio,jdbcType=DECIMAL},
+      </if>
+      <if test="record.invenModel != null">
+        inven_model = #{record.invenModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.invenNum != null">
+        inven_num = #{record.invenNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.tagPrice != null">
+        tag_price = #{record.tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.invenSize != null">
+        inven_size = #{record.invenSize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oriSize != null">
+        ori_size = #{record.oriSize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.oriModel != null">
+        ori_model = #{record.oriModel,jdbcType=VARCHAR},
+      </if>
+      <if test="record.standardSize != null">
+        standard_size = #{record.standardSize,jdbcType=VARCHAR},
+      </if>
+      <if test="record.barcode != null">
+        barcode = #{record.barcode,jdbcType=VARCHAR},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update fx_inventory
+    set inven_id = #{record.invenId,jdbcType=BIGINT},
+      supplier_id = #{record.supplierId,jdbcType=BIGINT},
+      inven_agio = #{record.invenAgio,jdbcType=DECIMAL},
+      inven_model = #{record.invenModel,jdbcType=VARCHAR},
+      inven_num = #{record.invenNum,jdbcType=INTEGER},
+      tag_price = #{record.tagPrice,jdbcType=DECIMAL},
+      inven_size = #{record.invenSize,jdbcType=VARCHAR},
+      ori_size = #{record.oriSize,jdbcType=VARCHAR},
+      ori_model = #{record.oriModel,jdbcType=VARCHAR},
+      standard_size = #{record.standardSize,jdbcType=VARCHAR},
+      barcode = #{record.barcode,jdbcType=VARCHAR},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsh.erp.datasource.entities.FxInventory">
+    update fx_inventory
+    <set>
+      <if test="supplierId != null">
+        supplier_id = #{supplierId,jdbcType=BIGINT},
+      </if>
+      <if test="invenAgio != null">
+        inven_agio = #{invenAgio,jdbcType=DECIMAL},
+      </if>
+      <if test="invenModel != null">
+        inven_model = #{invenModel,jdbcType=VARCHAR},
+      </if>
+      <if test="invenNum != null">
+        inven_num = #{invenNum,jdbcType=INTEGER},
+      </if>
+      <if test="tagPrice != null">
+        tag_price = #{tagPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="invenSize != null">
+        inven_size = #{invenSize,jdbcType=VARCHAR},
+      </if>
+      <if test="oriSize != null">
+        ori_size = #{oriSize,jdbcType=VARCHAR},
+      </if>
+      <if test="oriModel != null">
+        ori_model = #{oriModel,jdbcType=VARCHAR},
+      </if>
+      <if test="standardSize != null">
+        standard_size = #{standardSize,jdbcType=VARCHAR},
+      </if>
+      <if test="barcode != null">
+        barcode = #{barcode,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where inven_id = #{invenId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jsh.erp.datasource.entities.FxInventory">
+    update fx_inventory
+    set supplier_id = #{supplierId,jdbcType=BIGINT},
+      inven_agio = #{invenAgio,jdbcType=DECIMAL},
+      inven_model = #{invenModel,jdbcType=VARCHAR},
+      inven_num = #{invenNum,jdbcType=INTEGER},
+      tag_price = #{tagPrice,jdbcType=DECIMAL},
+      inven_size = #{invenSize,jdbcType=VARCHAR},
+      ori_size = #{oriSize,jdbcType=VARCHAR},
+      ori_model = #{oriModel,jdbcType=VARCHAR},
+      standard_size = #{standardSize,jdbcType=VARCHAR},
+      barcode = #{barcode,jdbcType=VARCHAR},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where inven_id = #{invenId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsh.erp.datasource.mappers.FxInventoryMapperEx">
+
+    <select id="selectByCondition" parameterType="com.jsh.erp.datasource.entities.FxInventoryExample" resultMap="com.jsh.erp.datasource.mappers.FxInventoryMapper.BaseResultMap">
+        select
+        <include refid="com.jsh.erp.datasource.mappers.FxInventoryMapper.Base_Column_List" />
+        from fx_inventory
+        where 1=1
+        <if test=" supplierIds != null" >
+            and supplier_id in  (#{supplierIds})
+        </if>
+        order by inven_id asc
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
+        </if>
+    </select>
+
+    <select id="counts" resultType="java.lang.Long">
+        select count(inven_id)
+        from fx_inventory
+        where 1=1
+        <if test=" supplierName != null" >
+            and supplier_id in( select id from fx_supplier where supplier_name like '%${supplierName}%')
+        </if>
+    </select>
+</mapper>

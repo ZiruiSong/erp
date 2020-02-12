@@ -1,0 +1,306 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jsh.erp.datasource.mappers.FxSupplierMapper">
+  <resultMap id="BaseResultMap" type="com.jsh.erp.datasource.entities.FxSupplier">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="supplier_desc" jdbcType="VARCHAR" property="supplierDesc" />
+    <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
+    <result column="supplier_type" jdbcType="INTEGER" property="supplierType" />
+    <result column="supplier_status" jdbcType="INTEGER" property="supplierStatus" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="distribution_desc" jdbcType="VARCHAR" property="distributionDesc" />
+    <result column="return_addr" jdbcType="VARCHAR" property="returnAddr" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="support_express" jdbcType="VARCHAR" property="supportExpress" />
+    <result column="delivery_limitation" jdbcType="VARCHAR" property="deliveryLimitation" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, supplier_desc, supplier_name, supplier_type, supplier_status, create_time, distribution_desc, 
+    return_addr, user_id, support_express, delivery_limitation
+  </sql>
+  <select id="selectByExample" parameterType="com.jsh.erp.datasource.entities.FxSupplierExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from fx_supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from fx_supplier
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from fx_supplier
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jsh.erp.datasource.entities.FxSupplierExample">
+    delete from fx_supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jsh.erp.datasource.entities.FxSupplier">
+    insert into fx_supplier (id, supplier_desc, supplier_name, 
+      supplier_type, supplier_status, create_time, 
+      distribution_desc, return_addr, user_id, 
+      support_express, delivery_limitation)
+    values (#{id,jdbcType=BIGINT}, #{supplierDesc,jdbcType=VARCHAR}, #{supplierName,jdbcType=VARCHAR}, 
+      #{supplierType,jdbcType=INTEGER}, #{supplierStatus,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{distributionDesc,jdbcType=VARCHAR}, #{returnAddr,jdbcType=VARCHAR}, #{userId,jdbcType=BIGINT}, 
+      #{supportExpress,jdbcType=VARCHAR}, #{deliveryLimitation,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jsh.erp.datasource.entities.FxSupplier">
+    insert into fx_supplier
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="supplierDesc != null">
+        supplier_desc,
+      </if>
+      <if test="supplierName != null">
+        supplier_name,
+      </if>
+      <if test="supplierType != null">
+        supplier_type,
+      </if>
+      <if test="supplierStatus != null">
+        supplier_status,
+      </if>
+      <if test="createTime != null">
+        create_time,
+      </if>
+      <if test="distributionDesc != null">
+        distribution_desc,
+      </if>
+      <if test="returnAddr != null">
+        return_addr,
+      </if>
+      <if test="userId != null">
+        user_id,
+      </if>
+      <if test="supportExpress != null">
+        support_express,
+      </if>
+      <if test="deliveryLimitation != null">
+        delivery_limitation,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="supplierDesc != null">
+        #{supplierDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null">
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierType != null">
+        #{supplierType,jdbcType=INTEGER},
+      </if>
+      <if test="supplierStatus != null">
+        #{supplierStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributionDesc != null">
+        #{distributionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="returnAddr != null">
+        #{returnAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="supportExpress != null">
+        #{supportExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryLimitation != null">
+        #{deliveryLimitation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jsh.erp.datasource.entities.FxSupplierExample" resultType="java.lang.Long">
+    select count(*) from fx_supplier
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update fx_supplier
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.supplierDesc != null">
+        supplier_desc = #{record.supplierDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierName != null">
+        supplier_name = #{record.supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.supplierType != null">
+        supplier_type = #{record.supplierType,jdbcType=INTEGER},
+      </if>
+      <if test="record.supplierStatus != null">
+        supplier_status = #{record.supplierStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null">
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.distributionDesc != null">
+        distribution_desc = #{record.distributionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="record.returnAddr != null">
+        return_addr = #{record.returnAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=BIGINT},
+      </if>
+      <if test="record.supportExpress != null">
+        support_express = #{record.supportExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliveryLimitation != null">
+        delivery_limitation = #{record.deliveryLimitation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update fx_supplier
+    set id = #{record.id,jdbcType=BIGINT},
+      supplier_desc = #{record.supplierDesc,jdbcType=VARCHAR},
+      supplier_name = #{record.supplierName,jdbcType=VARCHAR},
+      supplier_type = #{record.supplierType,jdbcType=INTEGER},
+      supplier_status = #{record.supplierStatus,jdbcType=INTEGER},
+      create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      distribution_desc = #{record.distributionDesc,jdbcType=VARCHAR},
+      return_addr = #{record.returnAddr,jdbcType=VARCHAR},
+      user_id = #{record.userId,jdbcType=BIGINT},
+      support_express = #{record.supportExpress,jdbcType=VARCHAR},
+      delivery_limitation = #{record.deliveryLimitation,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jsh.erp.datasource.entities.FxSupplier">
+    update fx_supplier
+    <set>
+      <if test="supplierDesc != null">
+        supplier_desc = #{supplierDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierName != null">
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierType != null">
+        supplier_type = #{supplierType,jdbcType=INTEGER},
+      </if>
+      <if test="supplierStatus != null">
+        supplier_status = #{supplierStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="distributionDesc != null">
+        distribution_desc = #{distributionDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="returnAddr != null">
+        return_addr = #{returnAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        user_id = #{userId,jdbcType=BIGINT},
+      </if>
+      <if test="supportExpress != null">
+        support_express = #{supportExpress,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryLimitation != null">
+        delivery_limitation = #{deliveryLimitation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jsh.erp.datasource.entities.FxSupplier">
+    update fx_supplier
+    set supplier_desc = #{supplierDesc,jdbcType=VARCHAR},
+      supplier_name = #{supplierName,jdbcType=VARCHAR},
+      supplier_type = #{supplierType,jdbcType=INTEGER},
+      supplier_status = #{supplierStatus,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      distribution_desc = #{distributionDesc,jdbcType=VARCHAR},
+      return_addr = #{returnAddr,jdbcType=VARCHAR},
+      user_id = #{userId,jdbcType=BIGINT},
+      support_express = #{supportExpress,jdbcType=VARCHAR},
+      delivery_limitation = #{deliveryLimitation,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
