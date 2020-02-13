@@ -2,9 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jsh.erp.datasource.mappers.FxInventoryMapperEx">
 
+    <resultMap id="InventoryVoMap" type="com.jsh.erp.datasource.entities.FxInventory" extends="com.jsh.erp.datasource.mappers.FxInventoryMapper.BaseResultMap">
+        <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
+    </resultMap>
     <select id="selectByCondition" parameterType="com.jsh.erp.datasource.entities.FxInventoryExample" resultMap="com.jsh.erp.datasource.mappers.FxInventoryMapper.BaseResultMap">
         select
-        <include refid="com.jsh.erp.datasource.mappers.FxInventoryMapper.Base_Column_List" />
+        inven_id, supplier_id, inven_agio, inven_model, inven_num, tag_price, inven_size,
+        ori_size, ori_model, standard_size, barcode, update_time
         from fx_inventory
         where 1=1
         <if test=" supplierIds != null" >
@@ -22,6 +26,24 @@
         where 1=1
         <if test=" supplierName != null" >
             and supplier_id in( select id from fx_supplier where supplier_name like '%${supplierName}%')
+        </if>
+    </select>
+
+    <select id="selectBySupplierName" resultMap="com.jsh.erp.datasource.mappers.FxInventoryMapperEx.InventoryVoMap">
+        select
+        t1.inven_id, t1.supplier_id, t1.inven_agio, t1.inven_model, t1.inven_num, t1.tag_price, t1.inven_size,
+        t1.ori_size, t1.ori_model, t1.standard_size, t1.barcode, t1.update_time,t2.supplier_name
+        from fx_inventory t1
+
+        left join fx_supplier t2
+        on t1.suppler_id = t2.id
+        where 1=1
+        <if test=" supplierIds != null" >
+            and t1.supplier_id in  (#{supplierIds})
+        </if>
+        order by t1.inven_id asc
+        <if test="offset != null and rows != null">
+            limit #{offset},#{rows}
         </if>
     </select>
 </mapper>

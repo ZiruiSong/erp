@@ -41,7 +41,7 @@ function initTableData() {
             { title: '货号',field: 'invenModel',width:100},
             { title: '尺码', field: 'invenSize',width:50,align:"center"},
             { title: '数量', field: 'invenNum',width:100,align:"center"},
-            { title: '渠道',field: 'supplierId',width:80,align:"center"},
+            { title: '渠道',field: 'supplierName',width:80,align:"center"},
             { title: '吊牌价', field: 'tagPrice',width:100,align:"center"},
             { title: '分销价', field: 'invenAgio',width:100,align:"center"}
         ]],

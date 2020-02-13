@@ -1,6 +1,7 @@
 package com.jsh.erp.service.fxInventory;
 
 
+import com.jsh.erp.datasource.vo.FxInventoryVo;
 import com.jsh.erp.service.ICommonQuery;
 import com.jsh.erp.utils.Constants;
 import com.jsh.erp.utils.QueryUtils;
@@ -23,7 +24,7 @@ public class FxInventoryComponent implements ICommonQuery {
     }
 
     @Override
-    public List<?> select(Map<String, String> map) throws Exception {
+    public List<FxInventoryVo> select(Map<String, String> map) throws Exception {
         String search = map.get(Constants.SEARCH);
         //渠道名称
         String supplierName = StringUtil.getInfo(search, "supplierName");
