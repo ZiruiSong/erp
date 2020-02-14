@@ -35,9 +35,7 @@ public class FxInventoryService {
     public List<FxInventoryVo> select(String supplierName, int offset, int rows){
         List<FxInventoryVo> list = null;
         try{
-            if(!StringUtil.isEmpty(supplierName)){
-                list = fxInventoryMapperEx.selectBySupplierName(supplierName,offset,rows);
-            }
+            list = fxInventoryMapperEx.selectBySupplierName(supplierName,offset,rows);
         }catch (Exception e){
             JshException.readFail(logger,e);
         }
