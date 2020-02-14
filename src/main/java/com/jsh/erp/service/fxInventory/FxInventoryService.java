@@ -6,7 +6,6 @@ import com.jsh.erp.datasource.mappers.FxSupplierMapper;
 import com.jsh.erp.datasource.vo.FxInventoryVo;
 import com.jsh.erp.exception.JshException;
 import com.jsh.erp.service.materialProperty.MaterialPropertyService;
-import com.jsh.erp.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

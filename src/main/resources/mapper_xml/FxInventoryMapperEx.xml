@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jsh.erp.datasource.mappers.FxInventoryMapperEx">
 
-    <resultMap id="InventoryVoMap" type="com.jsh.erp.datasource.entities.FxInventory" extends="com.jsh.erp.datasource.mappers.FxInventoryMapper.BaseResultMap">
+    <resultMap id="InventoryVoMap" type="com.jsh.erp.datasource.vo.FxInventoryVo" extends="com.jsh.erp.datasource.mappers.FxInventoryMapper.BaseResultMap">
         <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
     </resultMap>
     <select id="selectByCondition" parameterType="com.jsh.erp.datasource.entities.FxInventoryExample" resultMap="com.jsh.erp.datasource.mappers.FxInventoryMapper.BaseResultMap">
@@ -36,7 +36,7 @@
         from fx_inventory t1
 
         left join fx_supplier t2
-        on t1.suppler_id = t2.id
+        on t1.supplier_id = t2.id
         where 1=1
         <if test=" supplierName != null" >
             and t2.supplier_name like '%${supplierName}%')
