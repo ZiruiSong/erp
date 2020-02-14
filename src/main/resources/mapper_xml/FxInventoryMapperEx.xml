@@ -38,8 +38,8 @@
         left join fx_supplier t2
         on t1.suppler_id = t2.id
         where 1=1
-        <if test=" supplierIds != null" >
-            and t1.supplier_id in  (#{supplierIds})
+        <if test=" supplierName != null" >
+            and t2.supplier_name like '%${supplierName}%')
         </if>
         order by t1.inven_id asc
         <if test="offset != null and rows != null">
