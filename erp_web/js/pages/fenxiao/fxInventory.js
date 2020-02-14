@@ -37,13 +37,12 @@ function initTableData() {
         pageList: initPageNum,
         columns:[[
             { field: 'id',width:35,align:"center",checkbox:true},
-
             { title: '货号',field: 'invenModel',width:100},
             { title: '尺码', field: 'invenSize',width:50,align:"center"},
             { title: '数量', field: 'invenNum',width:100,align:"center"},
             { title: '渠道',field: 'supplierName',width:80,align:"center"},
             { title: '吊牌价', field: 'tagPrice',width:100,align:"center"},
-            { title: '分销价', field: 'invenAgio',width:100,align:"center"}
+            { title: '折扣', field: 'invenAgio',width:100,align:"center"}
         ]],
         toolbar:[
             {
@@ -85,7 +84,7 @@ function initTableData() {
         }
     });
     dgResize();
-    showSupplierDetails(1,initPageSize);
+    showInventoryDetails(1,initPageSize);
 }
 //导入数据
 function setInputFun(){
@@ -101,7 +100,7 @@ function setInputFun(){
 }
 
 //加载数据
-function showSupplierDetails(pageNo,pageSize) {
+function showInventoryDetails(pageNo,pageSize) {
 
     var supplierName = $('#searchInventory').val();
     $.ajax({
@@ -164,7 +163,7 @@ function bindEvent(){
         modal: true,
         collapsible:false,
         closable: true,
-        buttons:'#dlg-buttons5'
+        buttons:'#dlg-buttons227'
     });
     //导入excel表格
     $("#saveimport").unbind().bind({
@@ -174,7 +173,9 @@ function bindEvent(){
                 $.messager.alert('提示','请选择文件！','info');
                 return;
             }
-            $("#importExcelFM").submit();
+            $("#importInventoryExcelFM").submit().ajaxSuccess(function (info) {
+                $.messager.alert('提示',info.message);
+            });
             $('#importInventoryExcelDlg').dialog('close');
 
             $.messager.progress({
@@ -184,7 +185,7 @@ function bindEvent(){
             setTimeout(function(){
                 $.messager.progress('close');
                 var opts = $("#tableData").datagrid('options');
-                showSupplierDetails(opts.pageNumber,opts.pageSize);
+                showInventoryDetails(opts.pageNumber,opts.pageSize);
             },3300);
         }
     });
@@ -215,7 +216,7 @@ function bindEvent(){
     //搜索处理
     $("#searchBtn").unbind().bind({
         click:function() {
-            showSupplierDetails(1,initPageSize);
+            showInventoryDetails(1,initPageSize);
             var opts = $("#tableData").datagrid('options');
             var pager = $("#tableData").datagrid('getPager');
             opts.pageNumber = 1;
