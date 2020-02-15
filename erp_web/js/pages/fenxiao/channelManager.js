@@ -5,7 +5,6 @@ $(function() {
     bindEvent();
 });
 
-
 //初始化表格数据
 function initTableData() {
     //改变宽度和高度
@@ -36,30 +35,33 @@ function initTableData() {
         pageSize: initPageSize,
         pageList: initPageNum,
         columns:[[
-            { field: 'id',width:35,align:"center",checkbox:true},
-            { title: '货号',field: 'invenModel',width:100},
-            { title: '尺码', field: 'invenSize',width:50,align:"center"},
-            { title: '数量', field: 'invenNum',width:100,align:"center"},
-            { title: '渠道',field: 'supplierName',width:80,align:"center"},
-            { title: '吊牌价', field: 'tagPrice',width:100,align:"center"},
-            { title: '折扣', field: 'invenAgio',width:100,align:"center"}
+            { field: 'ck',width:35,align:"center",checkbox:true},
+            { title: '渠道编号',field: 'id',width:80},
+            { title: '渠道名称',field: 'supplierName',width:100},
+            { title: '渠道描述', field: 'supplierDesc',width:150,align:"center"},
+            { title: '渠道类型', field: 'typeName',width:100,align:"center"},
+            { title: '创建时间',field: 'createTime',width:80,align:"center"},
+            { title: '配货说明', field: 'distributionDesc',width:150,align:"center"},
+            { title: '退货地址', field: 'returnAddr',width:100,align:"center"},
+            { title: '渠道负责人', field: 'userName',width:100,align:"center"},
+            { title: '支持快递', field: 'supportExpress',width:100,align:"center"},
+            { title: '发货时效', field: 'deliveryLimitation',width:100,align:"center"}
         ]],
         toolbar:[
-
             {
-                id:'setInput',
-                text:'导入',
-                iconCls:'icon-excel',
+                id:'addChannel',
+                text:'增加',
+                iconCls:'icon-add',
                 handler:function() {
-                    setInputFun();
+                    addSuppler();
                 }
             },'-',
             {
-                id:'setOutput',
-                text:'导出',
-                iconCls:'icon-excel',
+                id:'deleteChannel',
+                text:'删除',
+                iconCls:'icon-remove',
                 handler:function() {
-                    setOutputFun();
+                    batDeleteSupplier();
                 }
             }
         ],
@@ -69,32 +71,21 @@ function initTableData() {
         }
     });
     dgResize();
-    showInventoryDetails(1,initPageSize);
-}
-//导入数据
-function setInputFun(){
-    //IE下不允许编辑 input=file的值  解决思路：重新克隆input=file，把这个input元素复制一个，然后将原来的删除。
-    //在IE下复制元素的时候，其中的值是不会被复制的，所以就达到了清空文件域的目的了。
-    //而在Firefox下，其中的值也会被一同复制，清空一下就做到兼容
-    var fileUploadInput = $("#inventoryFile");
-    fileUploadInput.after(fileUploadInput.clone().val(""));
-    fileUploadInput.remove();
-    $('#importInventoryExcelDlg').dialog('open').dialog('setTitle','导入库存');
-    $(".window-mask").css({ width: webW-20 ,height: webH});
-    $("#inventoryFile").focus();
+    showChannelManagerDetails(1,initPageSize);
 }
 
 //加载数据
-function showInventoryDetails(pageNo,pageSize) {
-
-    var supplierName = $('#searchInventory').val();
+function showChannelManagerDetails(pageNo,pageSize) {
+    var searchChannelName = $('#searchChannelName').val();
+    var searchChannelUser = $('#searchChannelUser').val();
     $.ajax({
         type:"get",
-        url: "/fxInventory/list",
+        url: "/channelManager/list",
         dataType: "json",
         data: ({
             search: JSON.stringify({
-                supplierName:supplierName
+                searchChannelName:searchChannelName,
+                searchChannelUser:searchChannelUser
             }),
             currentPage: pageNo,
             pageSize: pageSize
@@ -129,7 +120,7 @@ function ininPager() {
                     pageNumber:pageNum,
                     pageSize:pageSize
                 });
-                showInventoryDetails(pageNum,pageSize);
+                showChannelManagerDetails(pageNum,pageSize);
             }
         });
     }
@@ -140,39 +131,6 @@ function ininPager() {
 
 //绑定事件
 function bindEvent(){
-    //导入excel对话框
-    $('#importInventoryExcelDlg').dialog({
-        width: 400,
-        closed: true,
-        cache: false,
-        modal: true,
-        collapsible:false,
-        closable: true,
-        buttons:'#dlg-buttons227'
-    });
-    //导入excel表格
-    $("#saveimport").unbind().bind({
-        click:function() {
-            if($("#inventoryFile").val().length == 0)
-            {
-                $.messager.alert('提示','请选择文件！','info');
-                return;
-            }
-            $("#importInventoryExcelFM").submit();
-            $('#importInventoryExcelDlg').dialog('close');
-
-            $.messager.progress({
-                title:'请稍候',
-                msg:'数据处理ing...'
-            });
-            setTimeout(function(){
-                $.messager.progress('close');
-                var opts = $("#tableData").datagrid('options');
-                showInventoryDetails(opts.pageNumber,opts.pageSize);
-            },3300);
-        }
-    });
-
 
     //初始化键盘enter事件
     $(document).keydown(function(event) {
@@ -185,7 +143,7 @@ function bindEvent(){
         if(k == "13"&&(obj.id=="supplier" || obj.id=="contacts"|| obj.id=="phonenum"
             || obj.id=="email" || obj.id=="description" ))
         {
-            $("#saveSupplier").click();
+            // $("#saveSupplier").click();
         }
 
         //搜索按钮添加快捷键
@@ -199,7 +157,7 @@ function bindEvent(){
     //搜索处理
     $("#searchBtn").unbind().bind({
         click:function() {
-            showInventoryDetails(1,initPageSize);
+            showChannelManagerDetails(1,initPageSize);
             var opts = $("#tableData").datagrid('options');
             var pager = $("#tableData").datagrid('getPager');
             opts.pageNumber = 1;
@@ -216,12 +174,8 @@ function bindEvent(){
     //重置按钮
     $("#searchResetBtn").unbind().bind({
         click:function(){
-            $("#searchSupplier").val("");
-            $("#searchType").val("");
-            $("#searchPhonenum").val("");
-            $("#searchTelephone").val("");
-            $("#searchDesc").val("");
-
+            $("#searchChannelName").val("");
+            $("#searchChannelUser").val("");
             //加载完以后重新初始化
             $("#searchBtn").click();
         }

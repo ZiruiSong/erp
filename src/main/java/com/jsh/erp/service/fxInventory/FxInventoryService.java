@@ -4,7 +4,6 @@ import com.jsh.erp.constants.BusinessConstants;
 import com.jsh.erp.datasource.entities.FxInventory;
 import com.jsh.erp.datasource.mappers.FxInventoryMapper;
 import com.jsh.erp.datasource.mappers.FxInventoryMapperEx;
-import com.jsh.erp.datasource.mappers.FxSupplierMapper;
 import com.jsh.erp.datasource.vo.FxInventoryVo;
 import com.jsh.erp.exception.JshException;
 import com.jsh.erp.service.log.LogService;

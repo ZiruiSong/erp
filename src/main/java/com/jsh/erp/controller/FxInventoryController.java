@@ -34,10 +34,15 @@ public class FxInventoryController {
 
 
     @PostMapping(value = "/importExcel")
-    public BaseResponseInfo importExcelVendor(MultipartFile inventoryFile,
+    public void importExcelVendor(MultipartFile inventoryFile,
                                   HttpServletRequest request, HttpServletResponse response) {
-        return importFun(inventoryFile);
-//        response.sendRedirect("../pages/fenxiao/fxInventory.html");
+        importFun(inventoryFile);
+        try {
+            response.sendRedirect("../pages/fenxiao/fxInventory.html");
+        } catch (IOException e) {
+            System.out.println("重定向失败");
+            e.printStackTrace();
+        }
     }
 
     public BigDecimal parseBigDecimalEx(String str){
@@ -78,6 +83,8 @@ public class FxInventoryController {
                 inventory.setInvenNum(Integer.parseInt(ExcelUtils.getContent(src,i,2)));
                 inventory.setInvenAgio(parseBigDecimalEx(ExcelUtils.getContent(src, i, 3)));
                 inventory.setTagPrice(parseBigDecimalEx(ExcelUtils.getContent(src, i, 4)));
+                inventory.setSupplierId(106802L);
+                inventory.setInvenSize(ExcelUtils.getContent(src,i,1));
                 sList.add(inventory);
             }
             info = fxInventoryService.importExcel(sList);
