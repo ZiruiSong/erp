@@ -53,7 +53,8 @@ function initTableData() {
                 text:'增加',
                 iconCls:'icon-add',
                 handler:function() {
-                    addSuppler();
+                    // addSuppler();
+
                 }
             },'-',
             {
@@ -181,4 +182,21 @@ function bindEvent(){
         }
     });
 
+    //查询备选的渠道负责人
+    $('#lookForChannelManagerUser').click('click',function () {
+        selectChannelUser();
+    });
+
+    function selectChannelUser(){
+        $('#forSelectChannelManagerUserDlg').dialog({
+            title: '负责人选择',
+            width: webW/2,
+            height: webH/2,
+            closed: false,
+            cache: false,
+            href: '/pages/fenxiao/channelManagerUser_forselect.html',
+            modal: true,
+            resizable:true
+        });
+    }
 }
