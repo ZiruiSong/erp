@@ -3,6 +3,8 @@ $(function() {
     initTableData();
     ininPager();
     bindEvent();
+
+
 });
 
 //初始化表格数据
@@ -53,8 +55,7 @@ function initTableData() {
                 text:'增加',
                 iconCls:'icon-add',
                 handler:function() {
-                    // addSuppler();
-
+                    addChannel();
                 }
             },'-',
             {
@@ -130,6 +131,27 @@ function ininPager() {
     }
 }
 
+function addChannel(){
+    $('#addChannelFM input').val('');
+    $('#addChannelDlg').dialog('open').dialog('setTitle','<img src="/js/easyui-1.3.5/themes/icons/edit_add.png"/>&nbsp;添加渠道');
+    $(".window-mask").css({width: webW, height: webH});
+}
+
+
+
+function selectChannelUser(){
+    $('#forSelectChannelManagerUserDlg').dialog({
+        title: '选择一个渠道负责人',
+        width: webW/2,
+        height: webH/2,
+        closed: false,
+        cache: false,
+        href: '/pages/fenxiao/channelManagerUser_forselect.html',
+        modal: true,
+        resizable:true
+    });
+}
+
 //绑定事件
 function bindEvent(){
 
@@ -170,6 +192,11 @@ function bindEvent(){
         }
     });
 
+    //查询备选的渠道负责人
+    $('#lookForChannelManagerUser').on('click',function () {
+        selectChannelUser();
+    });
+
     $("#searchBtn").click();
 
     //重置按钮
@@ -182,21 +209,5 @@ function bindEvent(){
         }
     });
 
-    //查询备选的渠道负责人
-    $('#lookForChannelManagerUser').click('click',function () {
-        selectChannelUser();
-    });
 
-    function selectChannelUser(){
-        $('#forSelectChannelManagerUserDlg').dialog({
-            title: '负责人选择',
-            width: webW/2,
-            height: webH/2,
-            closed: false,
-            cache: false,
-            href: '/pages/fenxiao/channelManagerUser_forselect.html',
-            modal: true,
-            resizable:true
-        });
-    }
 }
