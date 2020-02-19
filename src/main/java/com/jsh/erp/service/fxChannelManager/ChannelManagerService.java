@@ -9,7 +9,7 @@ import com.jsh.erp.service.materialProperty.MaterialPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-
+import static com.jsh.erp.utils.Tools.getCenternTime;
 import javax.annotation.Resource;
 import java.util.List;
 
@@ -34,6 +34,9 @@ public class ChannelManagerService {
         List<ChannelManagerVo2List> list = null;
         try{
             list = fxSupplierMapperEx.selectByCondition(channelName,channelUserId,offset,rows);
+            for(ChannelManagerVo2List channelManagerVo2List:list){
+                channelManagerVo2List.setCreateTimeStr(getCenternTime(channelManagerVo2List.getCreateTime()));
+            }
         }catch (Exception e){
             JshException.readFail(logger,e);
         }

@@ -49,16 +49,54 @@
                            data-options="required:true,validType:'minLength[2]'" style="width: 100px;height: 20px"/>
                     不能重复，至少两个字符
                 </td>
+                <td></td>
             </tr>
             <tr>
                 <td style="height:30px;">渠道负责人</td>
-                <td style="padding:5px" colspan="3">
-                    <input name="channelManagerUser" id="channelManagerUser"   style="width: 180px;height: 20px" readonly="readonly"/>
+                <td style="padding:5px">
+                    <input name="channelManagerUser" id="channelManagerUser"   style="width: 100px;height: 20px" readonly="readonly"/>
                     <a href="javascript:void(0)" class="l-btn l-btn-plain" group="" id="lookForChannelManagerUser">
                         <span class="l-btn-left"><span class="l-btn-text icon-search l-btn-icon-left"></span></span></a>
                     <input id = "channelManagerUserId" name = "channelManagerUserId" type="hidden">
                 </td>
                 <td></td>
+            </tr>
+            <tr>
+                <td style="height:30px;">渠道描述</td>
+                <td style="padding:5px" colspan="2">
+                    <textarea name="channelDesc" id="channelDesc" placeholder="渠道信息的简单描述" style=" height:40px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td style="height:30px;">渠道类型</td>
+                <td style="padding:5px">
+                    <select name="channelType" id="channelType" style="width:90px;">
+                        <option value="-1">请选择</option>
+                        <option value="1">现货</option>
+                        <option value="0">非现货</option>
+                    </select>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="height:30px;">配货说明</td>
+                <td style="padding:5px" colspan="2">
+                    <textarea name="distributionDesc" id="distributionDesc" placeholder="配货说明的描述" style=" height:40px;"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>退货地址</td>
+                <td style="padding:5px" colspan="2">
+                    <input name="returnAddress" id="returnAddress" class="easyui-validatebox"
+                            style="height: 20px"/>
+                </td>
+            </tr>
+            <tr>
+                <td>支持快递</td>
+                <td style="padding:5px" colspan="2">
+                    <input name="supportExpress" id="supportExpress" class="easyui-validatebox"
+                           style="height: 20px"/>
+                </td>
             </tr>
         </table>
     </form>
@@ -69,7 +107,7 @@
        onclick="javascript:$('#addChannelDlg').dialog('close')">取消</a>
 </div>
 
-<div id="forSelectChannelManagerUserDlg" class="easyui-dialog" style="width:380px;padding:10px 20px"
+<div id="forSelectChannelManagerUserDlg" class="easyui-dialog"
      closed="true" modal="true" cache="false" collapsible="false" closable="true">
 </div>
 </body>

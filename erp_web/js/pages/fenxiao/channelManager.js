@@ -42,12 +42,12 @@ function initTableData() {
             { title: '渠道名称',field: 'supplierName',width:100},
             { title: '渠道描述', field: 'supplierDesc',width:150,align:"center"},
             { title: '渠道类型', field: 'typeName',width:100,align:"center"},
-            { title: '创建时间',field: 'createTime',width:80,align:"center"},
+            { title: '渠道负责人', field: 'userName',width:100,align:"center"},
             { title: '配货说明', field: 'distributionDesc',width:150,align:"center"},
             { title: '退货地址', field: 'returnAddr',width:100,align:"center"},
-            { title: '渠道负责人', field: 'userName',width:100,align:"center"},
             { title: '支持快递', field: 'supportExpress',width:100,align:"center"},
-            { title: '发货时效', field: 'deliveryLimitation',width:100,align:"center"}
+            { title: '发货时效', field: 'deliveryLimitation',width:100,align:"center"},
+            { title: '创建时间',field: 'createTimeStr',width:150,align:"center"}
         ]],
         toolbar:[
             {
@@ -142,7 +142,7 @@ function addChannel(){
 function selectChannelUser(){
     $('#forSelectChannelManagerUserDlg').dialog({
         title: '选择一个渠道负责人',
-        width: webW/2,
+        width: 500,
         height: webH/2,
         closed: false,
         cache: false,

@@ -6,6 +6,7 @@ public class ChannelManagerVo2List extends FxSupplier {
     String typeName;
     String statusName;
     String userName;
+    String createTimeStr;
 
     public String getTypeName() {
         return typeName;
@@ -29,5 +30,13 @@ public class ChannelManagerVo2List extends FxSupplier {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getCreateTimeStr() {
+        return createTimeStr;
+    }
+
+    public void setCreateTimeStr(String createTimeStr) {
+        this.createTimeStr = createTimeStr;
     }
 }
